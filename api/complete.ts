@@ -24,7 +24,7 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
                 )
             ).text()
         ).slice(5)
-    )[0].map((e) => e[0] as string);
+    )[0].map((e: [string]) => e[0] as string);
     res.status(200).json(completes);
 };
 
