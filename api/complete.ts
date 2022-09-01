@@ -26,7 +26,7 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
         ).slice(5)
     )[0].map((e: [string]) => e[0] as string);
     console.log(completes);
-    res.status(200).json(completes);
+    res.status(200).send(JSON.stringify(completes));
 };
 
 export default complete;
