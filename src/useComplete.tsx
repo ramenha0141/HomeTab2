@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Google as GoogleIcon, Web as WebIcon } from '@mui/icons-material';
+import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import runSearch from './runSearch';
 import useDebounce from './useDebounce';
 
 interface Candidate {
@@ -8,11 +11,16 @@ interface Candidate {
 }
 
 const useComplete = (text: string, setText: (text: string) => void) => {
-    const debouncedText = useDebounce(text, 300);
-    const [candidates, setCandidates] = useState<Candidate[]>();
+    const debouncedText = useDebounce(text, 200);
+    const [candidates, setCandidates] = useState<Candidate[]>([]);
+    const candidateElements = useRef<HTMLDivElement[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     useEffect(() => {
-        if (!debouncedText) return;
-        if (debouncedText.startsWith('url:')) {
+        if (!debouncedText) {
+            setCandidates([]);
+            return;
+        }
+        if (debouncedText.startsWith('url:') && debouncedText.length > 4) {
             setCandidates([
                 {
                     type: 'url',
@@ -33,9 +41,46 @@ const useComplete = (text: string, setText: (text: string) => void) => {
                 });
         }
     }, [debouncedText]);
-    return useMemo(() => {
-        console.log(candidates);
-        return null;
-    }, [candidates]);
+    return useMemo(
+        () =>
+            candidates.length ? (
+                <List dense>
+                    {candidates.map((candidate, i) => (
+                        <ListItem key={i} disablePadding>
+                            <ListItemButton
+                                sx={{
+                                    pr: 9,
+                                    backgroundColor:
+                                        i === selectedIndex
+                                            ? 'rgba(255, 255, 255, 0.12)'
+                                            : undefined
+                                }}
+                                onClick={() => runSearch(candidate.text)}
+                                ref={(e) =>
+                                    e
+                                        ? (candidateElements.current[i] = e)
+                                        : delete candidateElements.current[i]
+                                }
+                            >
+                                <ListItemAvatar>
+                                    {candidate.type === 'search' ? <GoogleIcon /> : <WebIcon />}
+                                </ListItemAvatar>
+                                <ListItemText
+                                    sx={{ textAlign: 'center' }}
+                                    primaryTypographyProps={{
+                                        sx: {
+                                            fontSize: 18
+                                        }
+                                    }}
+                                    primary={candidate.text}
+                                    secondary={candidate.detail}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : null,
+        [candidates]
+    );
 };
 export default useComplete;

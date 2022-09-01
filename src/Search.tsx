@@ -1,5 +1,6 @@
 import { Box, styled } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import runSearch from './runSearch';
 import useComplete from './useComplete';
 
 const SearchContainer = styled('div')({
@@ -31,20 +32,45 @@ const Input = styled('input')(({ theme }) => ({
     outline: 'none'
 }));
 
+let isDuringComposition = false;
+
 const Search = () => {
     const [text, setText] = useState('');
-    const complete = useComplete(text, setText);
+    const [selectedText, setSelectedText] = useState<string | null>(null);
+    const [focused, setFocused] = useState(false);
+    const complete = useComplete(selectedText ?? text, setSelectedText);
+    useEffect(() => setSelectedText(null), [text]);
     return (
         <SearchContainer>
             <SearchBox>
                 <Input
                     placeholder='Search..'
                     autoFocus
-                    value={text}
+                    value={selectedText ?? text}
                     onChange={(e) => setText(e.target.value)}
+                    onFocus={() => setFocused(true)}
+                    onCompositionStart={() => (isDuringComposition = true)}
+                    onCompositionEnd={() => (isDuringComposition = false)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !isDuringComposition) {
+                            runSearch(text);
+                        }
+                    }}
                 />
+                {focused && complete}
             </SearchBox>
-            <Box>{complete}</Box>
+            {focused && (
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        left: 0,
+                        top: 0,
+                        width: '100vw',
+                        height: '100vh'
+                    }}
+                    onClick={() => setFocused(false)}
+                />
+            )}
         </SearchContainer>
     );
 };
