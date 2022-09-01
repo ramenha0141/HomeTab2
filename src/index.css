@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: 'hidden';
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+::selection {
+    background-color: rgba(0, 160, 255, 0.4);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
