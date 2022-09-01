@@ -1,4 +1,4 @@
-import goUrl from './goURL';
+import goUrl from './goUrl';
 
 const runSearch = (text: string) => {
     if (text.startsWith('url:') && text.length > 4) {

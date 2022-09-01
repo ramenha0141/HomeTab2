@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import runSearch from './runSearch';
 import useComplete from './useComplete';
 

@@ -27,7 +27,7 @@ import {
 import { atom, useAtom } from 'jotai';
 import { MouseEvent, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-import goUrl from './goURL';
+import goUrl from './goUrl';
 
 interface Bookmark {
     id: string;
