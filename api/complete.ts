@@ -2,6 +2,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import fetch from 'node-fetch';
 
 const complete = async (req: VercelRequest, res: VercelResponse) => {
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const { q } = req.query;
     if (!q || !q.length) {
         res.status(400).json({
@@ -25,5 +27,4 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
     )[1];
     res.status(200).json(completes);
 };
-
 export default complete;

@@ -1,5 +1,6 @@
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { useState } from 'react';
+import useComplete from './useComplete';
 
 const SearchContainer = styled('div')({
     position: 'relative',
@@ -32,6 +33,7 @@ const Input = styled('input')(({ theme }) => ({
 
 const Search = () => {
     const [text, setText] = useState('');
+    const complete = useComplete(text, setText);
     return (
         <SearchContainer>
             <SearchBox>
@@ -42,6 +44,7 @@ const Search = () => {
                     onChange={(e) => setText(e.target.value)}
                 />
             </SearchBox>
+            <Box>{complete}</Box>
         </SearchContainer>
     );
 };
