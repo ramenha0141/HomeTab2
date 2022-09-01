@@ -38,7 +38,10 @@ const Search = () => {
     const [text, setText] = useState('');
     const [selectedText, setSelectedText] = useState<string | null>(null);
     const [focused, setFocused] = useState(false);
-    const complete = useComplete(selectedText ?? text, setSelectedText);
+    const [complete, { selectPrev, selectNext }] = useComplete(
+        selectedText ?? text,
+        setSelectedText
+    );
     useEffect(() => setSelectedText(null), [text]);
     return (
         <SearchContainer>
@@ -52,8 +55,14 @@ const Search = () => {
                     onCompositionStart={() => (isDuringComposition = true)}
                     onCompositionEnd={() => (isDuringComposition = false)}
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !isDuringComposition) {
-                            runSearch(text);
+                        if (e.key === 'Enter') {
+                            if (!isDuringComposition) {
+                                runSearch(text);
+                            }
+                        } else if (e.key === 'ArrowUp') {
+                            selectPrev();
+                        } else if (e.key === 'ArrowDown') {
+                            selectNext();
                         }
                     }}
                 />
