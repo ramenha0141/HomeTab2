@@ -21,6 +21,7 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
             )}&client=gws-wiz&xssi=t&hl=ja`
         )
     ).text();
+    console.log(data);
     const completes = JSON.parse(data.slice(5))[0].map((e: [string]) => e[0] as string);
     res.status(200).json(completes);
 };
