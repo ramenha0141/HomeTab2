@@ -14,15 +14,15 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
             error: 'bad "q" parameter'
         });
     }
-    const data = await (
-        await fetch(
-            `https://www.google.co.jp/complete/search?q=${encodeURI(
-                q as string
-            )}&client=gws-wiz&xssi=t&hl=ja`
-        )
-    ).text();
-    console.log(data);
-    const completes = JSON.parse(data.slice(5))[0].map((e: [string]) => e[0] as string);
+    const completes = (
+        await (
+            await fetch(
+                `http://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(
+                    q as string
+                )}`
+            )
+        ).json()
+    )[1];
     res.status(200).json(completes);
 };
 
