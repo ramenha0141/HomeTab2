@@ -11,7 +11,7 @@ import Bookmark from './Bookmark';
 import Search from './Search';
 
 const searchParams = new URL(window.location.href).searchParams;
-if (searchParams.has('migrate')) {
+if (searchParams.has('migrate') && !localStorage.getItem('bookmarkItems')) {
     localStorage.setItem('bookmarkItems', searchParams.get('migrate')!);
     location.replace(location.origin);
 }
