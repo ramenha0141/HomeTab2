@@ -40,7 +40,6 @@ const Search = () => {
     const [focused, setFocused] = useState(false);
     const [complete, { selectPrev, selectNext }] = useComplete(text, setSelectedText);
     useEffect(() => setSelectedText(null), [text]);
-    console.log(text, selectedText);
     return (
         <SearchContainer>
             <SearchBox>
@@ -57,10 +56,15 @@ const Search = () => {
                             if (!isDuringComposition) {
                                 runSearch(text);
                             }
+                        } else if (e.key === 'Escape') {
+                            e.currentTarget.blur();
+                            setFocused(false);
                         } else if (e.key === 'ArrowUp') {
                             selectPrev();
+                            e.preventDefault();
                         } else if (e.key === 'ArrowDown') {
                             selectNext();
+                            e.preventDefault();
                         }
                     }}
                 />
