@@ -10,6 +10,12 @@ import { useMemo } from 'react';
 import Bookmark from './Bookmark';
 import Search from './Search';
 
+const searchParams = new URL(window.location.href).searchParams;
+if (searchParams.has('migrate')) {
+    localStorage.setItem('bookmarkItems', searchParams.get('migrate')!);
+    location.replace(location.origin);
+}
+
 const App = () => {
     const darkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const theme = useMemo(
