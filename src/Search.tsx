@@ -38,11 +38,9 @@ const Search = () => {
     const [text, setText] = useState('');
     const [selectedText, setSelectedText] = useState<string | null>(null);
     const [focused, setFocused] = useState(false);
-    const [complete, { selectPrev, selectNext }] = useComplete(
-        selectedText ?? text,
-        setSelectedText
-    );
+    const [complete, { selectPrev, selectNext }] = useComplete(text, setSelectedText);
     useEffect(() => setSelectedText(null), [text]);
+    console.log(text, selectedText);
     return (
         <SearchContainer>
             <SearchBox>
