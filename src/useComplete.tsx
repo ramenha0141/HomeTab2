@@ -10,6 +10,8 @@ interface Candidate {
     detail?: string;
 }
 
+const domain_pattern = /^([\w]{3,}\.)+?(com|jp|co\.jp|net|dev|io)$/;
+
 const useComplete = (
     text: string,
     setText: (text: string) => void
@@ -32,15 +34,32 @@ const useComplete = (
                 }
             ]);
         } else {
+            const isDomain = domain_pattern.test(debouncedText);
             fetch(`https://hometab.live/api/complete?q=${debouncedText}`)
                 .then((res) => res.json())
                 .then((candidates: string[]) => {
-                    setCandidates(
-                        candidates.map((candidate) => ({
-                            type: 'search',
-                            text: candidate
-                        }))
-                    );
+                    if (isDomain) {
+                        setCandidates([
+                            {
+                                type: 'url',
+                                text: debouncedText,
+                                detail: 'Open URL'
+                            },
+                            ...candidates.map(
+                                (candidate): Candidate => ({
+                                    type: 'search',
+                                    text: candidate
+                                })
+                            )
+                        ]);
+                    } else {
+                        setCandidates(
+                            candidates.map((candidate) => ({
+                                type: 'search',
+                                text: candidate
+                            }))
+                        );
+                    }
                 });
         }
     }, [debouncedText]);
