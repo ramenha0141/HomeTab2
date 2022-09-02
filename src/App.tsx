@@ -30,7 +30,7 @@ const App = () => {
                     height: '100vh',
                     backgroundImage: `url("/wallpaper/Monterey ${
                         darkMode ? 'Dark' : 'Light'
-                    }.png")`,
+                    }.webp")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'cover'
