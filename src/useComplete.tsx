@@ -45,7 +45,7 @@ const useComplete = (
         }
     }, [debouncedText]);
     useEffect(() => {
-        if (selectedIndex) setText(candidates[selectedIndex].text);
+        if (selectedIndex !== null) setText(candidates[selectedIndex].text);
     }, [selectedIndex]);
     const selectPrev = () => {
         if (selectedIndex !== null) {

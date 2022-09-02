@@ -1,8 +1,10 @@
+import { Tune as TuneIcon } from '@mui/icons-material';
 import {
     Box,
     Container,
     createTheme,
     CssBaseline,
+    Fab,
     ThemeProvider,
     useMediaQuery
 } from '@mui/material';
@@ -49,7 +51,18 @@ const App = () => {
                     <Box sx={{ flexGrow: 2 }} />
                     <Search />
                     <Bookmark />
-                    <Box sx={{ flexGrow: 1 }} />
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: 'flex',
+                            justifyContent: 'end',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Fab>
+                            <TuneIcon />
+                        </Fab>
+                    </Box>
                 </Container>
             </Box>
         </ThemeProvider>
