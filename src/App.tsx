@@ -8,8 +8,9 @@ import {
     ThemeProvider,
     useMediaQuery
 } from '@mui/material';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Bookmark from './Bookmark';
+import Preferences from './Preferences';
 import Search from './Search';
 
 const searchParams = new URL(window.location.href).searchParams;
@@ -29,6 +30,7 @@ const App = () => {
             }),
         [darkMode]
     );
+    const [showPreferences, setShowPreferences] = useState(false);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -59,12 +61,13 @@ const App = () => {
                             alignItems: 'center'
                         }}
                     >
-                        <Fab>
+                        <Fab onClick={() => setShowPreferences(true)}>
                             <TuneIcon />
                         </Fab>
                     </Box>
                 </Container>
             </Box>
+            <Preferences open={showPreferences} onClose={() => setShowPreferences(false)} />
         </ThemeProvider>
     );
 };
