@@ -54,12 +54,14 @@ const App = () => {
                             justifyContent: 'end',
                             alignItems: 'center'
                         }}
-                    >
-                        <Fab onClick={() => setShowPreferences(true)}>
-                            <TuneIcon />
-                        </Fab>
-                    </Box>
+                    ></Box>
                 </Container>
+                <Fab
+                    sx={{ position: 'fixed', right: 32, bottom: 32 }}
+                    onClick={() => setShowPreferences(true)}
+                >
+                    <TuneIcon />
+                </Fab>
             </Box>
             <Preferences open={showPreferences} onClose={() => setShowPreferences(false)} />
         </ThemeProvider>

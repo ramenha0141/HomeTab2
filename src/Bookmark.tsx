@@ -179,6 +179,16 @@ const BookmarkDialog = ({
                         label='URL'
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                if (dialogType === 'add') {
+                                    addBookmark();
+                                } else {
+                                    editBookmark();
+                                }
+                                e.preventDefault();
+                            }
+                        }}
                     ></TextField>
                 </DialogContent>
                 <DialogActions>
