@@ -1,17 +1,27 @@
-import { Tune as TuneIcon } from '@mui/icons-material';
+import {
+    ChevronRight as ChevronRightIcon,
+    FormatListBulleted as FormatListBulletedIcon,
+    Tune as TuneIcon
+} from '@mui/icons-material';
 import {
     Box,
+    CircularProgress,
     Container,
     createTheme,
     CssBaseline,
+    Drawer,
     Fab,
+    IconButton,
     ThemeProvider,
+    Typography,
     useMediaQuery
 } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import Bookmark from './Bookmark';
 import Preferences from './Preferences';
 import Search from './Search';
+
+const Tasks = lazy(() => import('./Tasks'));
 
 const App = () => {
     const darkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -25,6 +35,7 @@ const App = () => {
         [darkMode]
     );
     const [showPreferences, setShowPreferences] = useState(false);
+    const [showTodo, setShowTodo] = useState(false);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -56,13 +67,57 @@ const App = () => {
                         }}
                     ></Box>
                 </Container>
-                <Fab
-                    sx={{ position: 'fixed', right: 32, bottom: 32 }}
-                    onClick={() => setShowPreferences(true)}
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        right: 32,
+                        bottom: 32,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2
+                    }}
                 >
-                    <TuneIcon />
-                </Fab>
+                    <Fab onClick={() => setShowTodo(true)}>
+                        <FormatListBulletedIcon />
+                    </Fab>
+                    <Fab onClick={() => setShowPreferences(true)}>
+                        <TuneIcon />
+                    </Fab>
+                </Box>
             </Box>
+            <Drawer variant='persistent' anchor='right' open={showTodo}>
+                <Box
+                    sx={{
+                        height: 50,
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        px: 1
+                    }}
+                >
+                    <IconButton onClick={() => setShowTodo(false)}>
+                        <ChevronRightIcon />
+                    </IconButton>
+                    <Typography variant='h5' sx={{ mx: 1 }}>
+                        Tasks
+                    </Typography>
+                </Box>
+                <Suspense
+                    fallback={
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                jusstifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <CircularProgress color='inherit' />
+                        </Box>
+                    }
+                >
+                    <Tasks />
+                </Suspense>
+            </Drawer>
             <Preferences open={showPreferences} onClose={() => setShowPreferences(false)} />
         </ThemeProvider>
     );
