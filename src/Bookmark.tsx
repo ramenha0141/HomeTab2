@@ -15,6 +15,7 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
+    DialogContentText,
     DialogTitle,
     IconButton,
     ListItemIcon,
@@ -202,7 +203,9 @@ const BookmarkDialog = ({
     return (
         <Dialog open={open} onClose={onClose} maxWidth='xs' fullWidth>
             <DialogTitle>Delete bookmark</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogContent>
+                <DialogContentText>Delete {title}?</DialogContentText>
+            </DialogContent>
             <DialogActions>
                 <Button color='error' onClick={deleteBookmark}>
                     Delete
