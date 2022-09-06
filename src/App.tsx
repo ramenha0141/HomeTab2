@@ -67,57 +67,63 @@ const App = () => {
                         }}
                     ></Box>
                 </Container>
-                <Box
-                    sx={{
-                        position: 'fixed',
-                        right: 32,
-                        bottom: 32,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2
-                    }}
+                <Drawer
+                    variant='temporary'
+                    anchor='right'
+                    open={showTodo}
+                    onClose={() => setShowTodo(false)}
                 >
-                    <Fab onClick={() => setShowTodo(true)}>
-                        <FormatListBulletedIcon />
-                    </Fab>
-                    <Fab onClick={() => setShowPreferences(true)}>
-                        <TuneIcon />
-                    </Fab>
-                </Box>
+                    <Box
+                        sx={{
+                            width: 400,
+                            height: 50,
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            px: 1
+                        }}
+                    >
+                        <IconButton onClick={() => setShowTodo(false)}>
+                            <ChevronRightIcon />
+                        </IconButton>
+                        <Typography variant='h5' sx={{ mx: 1 }}>
+                            Tasks
+                        </Typography>
+                    </Box>
+                    <Suspense
+                        fallback={
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    jusstifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <CircularProgress color='inherit' />
+                            </Box>
+                        }
+                    >
+                        <Tasks />
+                    </Suspense>
+                </Drawer>
             </Box>
-            <Drawer variant='persistent' anchor='right' open={showTodo}>
-                <Box
-                    sx={{
-                        height: 50,
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        px: 1
-                    }}
-                >
-                    <IconButton onClick={() => setShowTodo(false)}>
-                        <ChevronRightIcon />
-                    </IconButton>
-                    <Typography variant='h5' sx={{ mx: 1 }}>
-                        Tasks
-                    </Typography>
-                </Box>
-                <Suspense
-                    fallback={
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                jusstifyContent: 'center',
-                                alignItems: 'center'
-                            }}
-                        >
-                            <CircularProgress color='inherit' />
-                        </Box>
-                    }
-                >
-                    <Tasks />
-                </Suspense>
-            </Drawer>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    right: 32,
+                    bottom: 32,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2
+                }}
+            >
+                <Fab onClick={() => setShowTodo(true)}>
+                    <FormatListBulletedIcon />
+                </Fab>
+                <Fab onClick={() => setShowPreferences(true)}>
+                    <TuneIcon />
+                </Fab>
+            </Box>
             <Preferences open={showPreferences} onClose={() => setShowPreferences(false)} />
         </ThemeProvider>
     );
