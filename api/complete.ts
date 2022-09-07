@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 const complete = async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'https://hometab.live');
     const { q } = req.query;
     if (!q || !q.length) {
         res.status(400).json({
