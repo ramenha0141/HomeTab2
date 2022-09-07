@@ -54,7 +54,7 @@ const Search = () => {
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             if (!isDuringComposition) {
-                                runSearch(text);
+                                runSearch(selectedText ?? text);
                             }
                         } else if (e.key === 'Escape') {
                             e.currentTarget.blur();
