@@ -15,12 +15,13 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
         res.status(400).json({
             error: 'bad "q" parameter'
         });
+        return;
     }
     const completes = (
         await (
             await fetch(
                 `http://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(
-                    q as string
+                    q
                 )}`
             )
         ).json()
