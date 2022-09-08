@@ -23,7 +23,9 @@ const favicon = async (req: VercelRequest, res: VercelResponse) => {
     for (const element of head.querySelectorAll('link[rel*="icon"]')) {
         const href = element.getAttribute('href');
         if (href) {
-            console.log(new URL(href, response.url).href);
+            const url = new URL(href, response.url).href;
+            const image = await (await fetch(url)).blob();
+            res.status(200).send(image);
             return;
         }
     }
