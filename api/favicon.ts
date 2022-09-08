@@ -28,3 +28,4 @@ const favicon = async (req: VercelRequest, res: VercelResponse) => {
         }
     }
 };
+export default favicon;
