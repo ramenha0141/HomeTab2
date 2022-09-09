@@ -90,7 +90,7 @@ const App = () => {
                         <IconButton onClick={() => setApp(null)}>
                             <ChevronRightIcon />
                         </IconButton>
-                        <Typography variant='h5' sx={{ mx: 1 }}>
+                        <Typography variant='h5' sx={{ mx: 0.5 }}>
                             {app === 'tasks' ? 'Tasks' : ''}
                         </Typography>
                     </Box>
