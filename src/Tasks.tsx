@@ -54,7 +54,7 @@ const NewTaskDialog = ({ open, onClose }: { open: boolean; onClose: () => void }
         onClose();
     };
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} maxWidth='xs' fullWidth>
             <DialogTitle>Add New Task</DialogTitle>
             <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
                 <TextField
