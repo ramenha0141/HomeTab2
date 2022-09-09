@@ -94,8 +94,9 @@ const App = () => {
                         fallback={
                             <Box
                                 sx={{
+                                    flexGrow: 1,
                                     display: 'flex',
-                                    jusstifyContent: 'center',
+                                    justifyContent: 'center',
                                     alignItems: 'center'
                                 }}
                             >
