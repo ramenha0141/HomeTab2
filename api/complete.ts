@@ -5,15 +5,9 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', 'https://hometab.live');
     const { q } = req.query;
-    if (!q || !q.length) {
+    if (!(q && q.length && typeof q === 'string')) {
         res.status(400).json({
-            error: '"q" parameter required'
-        });
-        return;
-    }
-    if (typeof q !== 'string') {
-        res.status(400).json({
-            error: 'bad "q" parameter'
+            error: 'invalid "q" parameter'
         });
         return;
     }
