@@ -1,4 +1,5 @@
 import {
+    Apps as AppsIcon,
     ChevronRight as ChevronRightIcon,
     FormatListBulleted as FormatListBulletedIcon,
     Tune as TuneIcon
@@ -12,6 +13,9 @@ import {
     Drawer,
     Fab,
     IconButton,
+    SpeedDial,
+    SpeedDialAction,
+    SpeedDialIcon,
     ThemeProvider,
     Typography,
     useMediaQuery
@@ -35,7 +39,7 @@ const App = () => {
         [darkMode]
     );
     const [showPreferences, setShowPreferences] = useState(false);
-    const [showTodo, setShowTodo] = useState(false);
+    const [app, setApp] = useState<'tasks' | null>(null);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -70,8 +74,8 @@ const App = () => {
                 <Drawer
                     variant='temporary'
                     anchor='right'
-                    open={showTodo}
-                    onClose={() => setShowTodo(false)}
+                    open={!!app}
+                    onClose={() => setApp(null)}
                 >
                     <Box
                         sx={{
@@ -83,11 +87,11 @@ const App = () => {
                             px: 1
                         }}
                     >
-                        <IconButton onClick={() => setShowTodo(false)}>
+                        <IconButton onClick={() => setApp(null)}>
                             <ChevronRightIcon />
                         </IconButton>
                         <Typography variant='h5' sx={{ mx: 1 }}>
-                            Tasks
+                            {app === 'tasks' ? 'Tasks' : ''}
                         </Typography>
                     </Box>
                     <Suspense
@@ -104,7 +108,7 @@ const App = () => {
                             </Box>
                         }
                     >
-                        <Tasks />
+                        {app === 'tasks' ? <Tasks /> : null}
                     </Suspense>
                 </Drawer>
             </Box>
@@ -118,9 +122,16 @@ const App = () => {
                     gap: 2
                 }}
             >
-                <Fab onClick={() => setShowTodo(true)}>
-                    <FormatListBulletedIcon />
-                </Fab>
+                <SpeedDial
+                    ariaLabel='apps'
+                    icon={<SpeedDialIcon icon={<AppsIcon />} openIcon={<AppsIcon />} />}
+                >
+                    <SpeedDialAction
+                        icon={<FormatListBulletedIcon />}
+                        tooltipTitle='Tasks'
+                        onClick={() => setApp('tasks')}
+                    />
+                </SpeedDial>
                 <Fab onClick={() => setShowPreferences(true)}>
                     <TuneIcon />
                 </Fab>
