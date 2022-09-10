@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import ytdl from 'ytdl-core';
+console.log(Object.keys(ytdl));
 
 const youtube_download = async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -13,7 +14,7 @@ const youtube_download = async (req: VercelRequest, res: VercelResponse) => {
     }
     if (!(type === 'video' || type === 'audio')) {
         res.status(400).json({
-            error: 'invalid "audio" parameter'
+            error: 'invalid "type" parameter'
         });
         return;
     }
