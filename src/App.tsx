@@ -1,5 +1,6 @@
 import {
     Apps as AppsIcon,
+    Calculate as CalculateIcon,
     ChevronRight as ChevronRightIcon,
     FormatListBulleted as FormatListBulletedIcon,
     Tune as TuneIcon,
@@ -28,6 +29,7 @@ import Search from './Search';
 
 const Tasks = lazy(() => import('./Tasks'));
 const Youtube = lazy(() => import('./Youtube'));
+const Calculator = lazy(() => import('./Calculator'));
 
 const App = () => {
     const darkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -41,7 +43,7 @@ const App = () => {
         [darkMode]
     );
     const [showPreferences, setShowPreferences] = useState(false);
-    const [app, setApp] = useState<'tasks' | 'youtube' | null>(null);
+    const [app, setApp] = useState<'tasks' | 'youtube' | 'calculator' | null>(null);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -97,6 +99,8 @@ const App = () => {
                                 ? 'Tasks'
                                 : app === 'youtube'
                                 ? 'Youtube Downloader'
+                                : app === 'calculator'
+                                ? 'Calculator'
                                 : ''}
                         </Typography>
                     </Box>
@@ -114,7 +118,13 @@ const App = () => {
                             </Box>
                         }
                     >
-                        {app === 'tasks' ? <Tasks /> : app === 'youtube' ? <Youtube /> : null}
+                        {app === 'tasks' ? (
+                            <Tasks />
+                        ) : app === 'youtube' ? (
+                            <Youtube />
+                        ) : app === 'calculator' ? (
+                            <Calculator />
+                        ) : null}
                     </Suspense>
                 </Drawer>
             </Box>
@@ -141,6 +151,11 @@ const App = () => {
                         icon={<YouTubeIcon />}
                         tooltipTitle='Youtube Downloader'
                         onClick={() => setApp('youtube')}
+                    />
+                    <SpeedDialAction
+                        icon={<CalculateIcon />}
+                        tooltipTitle='Calculator'
+                        onClick={() => setApp('calculator')}
                     />
                 </SpeedDial>
                 <Fab onClick={() => setShowPreferences(true)}>
