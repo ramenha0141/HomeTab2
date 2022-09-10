@@ -82,6 +82,9 @@ const BookmarkItem = ({
                     cursor: dragging ? 'grabbing' : 'pointer'
                 }}
                 onClick={() => goUrl(item.url)}
+                onMouseUp={(e) => {
+                    if (e.button === 1) goUrl(item.url, true);
+                }}
                 onContextMenu={onContextMenu}
             >
                 <img
