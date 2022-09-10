@@ -2,7 +2,8 @@ import {
     Apps as AppsIcon,
     ChevronRight as ChevronRightIcon,
     FormatListBulleted as FormatListBulletedIcon,
-    Tune as TuneIcon
+    Tune as TuneIcon,
+    YouTube as YouTubeIcon
 } from '@mui/icons-material';
 import {
     Box,
@@ -26,6 +27,7 @@ import Preferences from './Preferences';
 import Search from './Search';
 
 const Tasks = lazy(() => import('./Tasks'));
+const Youtube = lazy(() => import('./Youtube'));
 
 const App = () => {
     const darkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -39,7 +41,7 @@ const App = () => {
         [darkMode]
     );
     const [showPreferences, setShowPreferences] = useState(false);
-    const [app, setApp] = useState<'tasks' | null>(null);
+    const [app, setApp] = useState<'tasks' | 'youtube' | null>(null);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -91,7 +93,11 @@ const App = () => {
                             <ChevronRightIcon />
                         </IconButton>
                         <Typography variant='h5' sx={{ mx: 0.5 }}>
-                            {app === 'tasks' ? 'Tasks' : ''}
+                            {app === 'tasks'
+                                ? 'Tasks'
+                                : app === 'youtube'
+                                ? 'Youtube Downloader'
+                                : ''}
                         </Typography>
                     </Box>
                     <Suspense
@@ -108,7 +114,7 @@ const App = () => {
                             </Box>
                         }
                     >
-                        {app === 'tasks' ? <Tasks /> : null}
+                        {app === 'tasks' ? <Tasks /> : app === 'youtube' ? <Youtube /> : null}
                     </Suspense>
                 </Drawer>
             </Box>
@@ -130,6 +136,11 @@ const App = () => {
                         icon={<FormatListBulletedIcon />}
                         tooltipTitle='Tasks'
                         onClick={() => setApp('tasks')}
+                    />
+                    <SpeedDialAction
+                        icon={<YouTubeIcon />}
+                        tooltipTitle='Youtube Downloader'
+                        onClick={() => setApp('youtube')}
                     />
                 </SpeedDial>
                 <Fab onClick={() => setShowPreferences(true)}>
