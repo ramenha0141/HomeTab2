@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import ytdl from 'ytdl-core';
-console.log(Object.keys(ytdl));
 
 const youtube_download = async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
