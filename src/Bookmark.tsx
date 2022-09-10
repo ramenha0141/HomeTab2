@@ -72,36 +72,44 @@ const BookmarkItem = ({
     };
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <Box
-                sx={{
-                    position: 'relative',
-                    width: 86,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    cursor: dragging ? 'grabbing' : 'pointer'
-                }}
-                onClick={() => goUrl(item.url)}
-                onContextMenu={onContextMenu}
+            <a
+                href={
+                    item.url.startsWith('https://') || item.url.startsWith('http://')
+                        ? item.url
+                        : `https://${item.url}`
+                }
+                style={{ color: 'inherit', textDecoration: 'none' }}
             >
-                <img
-                    src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${item.url}&sz=64`}
-                    style={{ width: 64, height: 64, borderRadius: 8 }}
-                />
-                <Typography
-                    component='p'
+                <Box
                     sx={{
+                        position: 'relative',
                         width: 86,
-                        mt: 0.5,
-                        textAlign: 'center',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        cursor: dragging ? 'grabbing' : 'pointer'
                     }}
+                    onContextMenu={onContextMenu}
                 >
-                    {item.title}
-                </Typography>
-            </Box>
+                    <img
+                        src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${item.url}&sz=64`}
+                        style={{ width: 64, height: 64, borderRadius: 8 }}
+                    />
+                    <Typography
+                        component='p'
+                        sx={{
+                            width: 86,
+                            mt: 0.5,
+                            textAlign: 'center',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                        }}
+                    >
+                        {item.title}
+                    </Typography>
+                </Box>
+            </a>
         </div>
     );
 };
