@@ -4,27 +4,36 @@ import ytdl from 'ytdl-core';
 const youtube_download = async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', 'https://hometab.live');
-    const { url } = req.query;
-    if (!(url && url.length && typeof url == 'string')) {
+    const { video, type } = req.query;
+    if (!(video && video.length && typeof video == 'string')) {
         res.status(400).json({
-            error: 'invalid "url" parameter'
+            error: 'invalid "video" parameter'
+        });
+        return;
+    }
+    if (!(type === 'video' || type === 'audio')) {
+        res.status(400).json({
+            error: 'invalid "type" parameter'
         });
         return;
     }
     try {
-        const info = await ytdl.getBasicInfo(url);
-        const stream = ytdl(url, {
-            filter: (format) => !format.hasVideo && format.container === 'mp4',
-            quality: 'highestaudio'
+        const info = await ytdl.getBasicInfo(video);
+        const stream = ytdl(video, {
+            filter: (format) =>
+                type === 'video'
+                    ? format.hasVideo && format.container === 'mp4'
+                    : !format.hasVideo && format.container === 'mp4',
+            quality: type === 'video' ? 'highest' : 'highestaudio'
         });
         res.setHeader(
             'Content-Disposition',
-            `attachment; filename="${info.videoDetails.title}.mp3"`
+            `attachment; filename="${info.videoDetails.title}.${type === 'video' ? 'mp4' : 'mp3'}"`
         );
         stream.pipe(res);
     } catch (e) {
         console.log(e);
-        res.status(500).json({
+        res.status(400).json({
             error: ''
         });
     }
