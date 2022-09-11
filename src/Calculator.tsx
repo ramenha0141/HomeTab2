@@ -135,7 +135,7 @@ const Calculator = () => {
             }}
         >
             <Box sx={{ height: 64, display: 'flex', alignItems: 'center', fontSize: 32 }}>
-                {expr.join(' ')}
+                {expr.length ? expr.join(' ') : 0}
                 {result && ` = ${result}`}
             </Box>
             <Box
