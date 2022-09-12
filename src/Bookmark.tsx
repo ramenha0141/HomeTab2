@@ -3,6 +3,7 @@ import {
     DragEndEvent,
     DragStartEvent,
     MouseSensor,
+    TouchSensor,
     useSensor,
     useSensors
 } from '@dnd-kit/core';
@@ -231,7 +232,8 @@ const Bookmark = () => {
             activationConstraint: {
                 distance: 10
             }
-        })
+        }),
+        useSensor(TouchSensor, { activationConstraint: { distance: 10 } })
     );
     const onDragStart = ({ active }: DragStartEvent) => setDraggingId(active.id as string);
     const onDragEnd = ({ active, over }: DragEndEvent) => {
