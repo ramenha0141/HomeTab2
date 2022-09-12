@@ -31,7 +31,7 @@ interface RSSFeed {
 
 const rss = async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', 'https://hometab.live');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const { url } = req.query;
     if (!(url && url.length && typeof url === 'string')) {
         res.status(400).json({
