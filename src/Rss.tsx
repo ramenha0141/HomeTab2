@@ -1,4 +1,4 @@
-import { Box, TextField } from '@mui/material';
+import { Box, Card, CardMedia, TextField, Typography } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import createLocalStorageAtom from './createLocalStorageAtom';
@@ -40,7 +40,17 @@ const Rss = () => {
                 onChange={(e) => setUrl(e.target.value)}
                 sx={{ mx: 2 }}
             />
-            {feeds.map((feed) => feed.title)}
+            {feeds.map((feed) => (
+                <Card>
+                    <CardMedia component='img' image={feed.thumbnail ?? feed.enclosure.link} />
+                    <Typography gutterBottom variant='h5' component='div'>
+                        {feed.title}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                        {feed.description}
+                    </Typography>
+                </Card>
+            ))}
         </Box>
     );
 };
