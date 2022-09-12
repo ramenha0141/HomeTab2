@@ -3,6 +3,7 @@ import {
     Calculate as CalculateIcon,
     ChevronRight as ChevronRightIcon,
     FormatListBulleted as FormatListBulletedIcon,
+    RssFeed,
     Tune as TuneIcon,
     YouTube as YouTubeIcon
 } from '@mui/icons-material';
@@ -30,6 +31,7 @@ import Search from './Search';
 const Tasks = lazy(() => import('./Tasks'));
 const Youtube = lazy(() => import('./Youtube'));
 const Calculator = lazy(() => import('./Calculator'));
+const Rss = lazy(() => import('./Rss'));
 
 const App = () => {
     const darkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -43,7 +45,7 @@ const App = () => {
         [darkMode]
     );
     const [showPreferences, setShowPreferences] = useState(false);
-    const [app, setApp] = useState<'tasks' | 'youtube' | 'calculator' | null>(null);
+    const [app, setApp] = useState<'tasks' | 'youtube' | 'calculator' | 'rss' | null>(null);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -101,6 +103,8 @@ const App = () => {
                                 ? 'Youtube Downloader'
                                 : app === 'calculator'
                                 ? 'Calculator'
+                                : app === 'rss'
+                                ? 'RSS Feed'
                                 : ''}
                         </Typography>
                     </Box>
@@ -124,6 +128,8 @@ const App = () => {
                             <Youtube />
                         ) : app === 'calculator' ? (
                             <Calculator />
+                        ) : app === 'rss' ? (
+                            <Rss />
                         ) : null}
                     </Suspense>
                 </Drawer>
@@ -156,6 +162,11 @@ const App = () => {
                         icon={<CalculateIcon />}
                         tooltipTitle='Calculator'
                         onClick={() => setApp('calculator')}
+                    />
+                    <SpeedDialAction
+                        icon={<RssFeed />}
+                        tooltipTitle='RSS Feed'
+                        onClick={() => setApp('rss')}
                     />
                 </SpeedDial>
                 <Fab onClick={() => setShowPreferences(true)}>
