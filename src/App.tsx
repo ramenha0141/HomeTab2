@@ -80,6 +80,7 @@ const App = () => {
                 <Drawer
                     variant='temporary'
                     anchor='right'
+                    keepMounted
                     open={!!app}
                     onClose={() => setApp(null)}
                 >
