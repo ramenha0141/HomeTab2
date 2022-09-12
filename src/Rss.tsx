@@ -1,4 +1,4 @@
-import { Box, Card, CardMedia, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import createLocalStorageAtom from './createLocalStorageAtom';
@@ -33,23 +33,30 @@ const Rss = () => {
             .then(setFeeds);
     }, [url]);
     return (
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', mx: 4 }}>
             <TextField
                 label='RSS URL(Comma separated)'
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                sx={{ mx: 2 }}
+                sx={{ my: 2 }}
             />
-            {feeds.map((feed) => (
-                <Card>
-                    <CardMedia component='img' image={feed.thumbnail ?? feed.enclosure.link} />
-                    <Typography gutterBottom variant='h5' component='div'>
-                        {feed.title}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                        {feed.description}
-                    </Typography>
-                </Card>
+            {feeds.map((feed, i) => (
+                <Box key={i} sx={{ display: 'flex', py: 2 }}>
+                    {(feed.thumbnail || feed.enclosure.link) && (
+                        <img
+                            src={feed.thumbnail || feed.enclosure.link}
+                            style={{ height: 140, marginRight: 16 }}
+                        />
+                    )}
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant='h5' component='div'>
+                            {feed.title}
+                        </Typography>
+                        <Typography variant='body2' color='text.secondary'>
+                            {feed.description}
+                        </Typography>
+                    </Box>
+                </Box>
             ))}
         </Box>
     );
