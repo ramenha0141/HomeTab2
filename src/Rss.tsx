@@ -32,15 +32,15 @@ const Rss = () => {
             .then((res) => res.json())
             .then(setFeeds);
     }, [url]);
-    console.log(feeds);
     return (
-        <Box>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
             <TextField
                 label='RSS URL(Comma separated)'
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
+                sx={{ mx: 2 }}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}></Box>
+            {feeds.map((feed) => feed.title)}
         </Box>
     );
 };
