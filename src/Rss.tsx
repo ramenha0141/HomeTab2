@@ -42,11 +42,8 @@ const Rss = () => {
             />
             {feeds.map((feed, i) => (
                 <Box key={i} sx={{ display: 'flex', py: 2 }}>
-                    {(feed.thumbnail || feed.enclosure.link) && (
-                        <img
-                            src={feed.thumbnail || feed.enclosure.link}
-                            style={{ height: 140, marginRight: 16 }}
-                        />
+                    {feed.thumbnail && (
+                        <img src={feed.thumbnail} style={{ height: 140, marginRight: 16 }} />
                     )}
                     <Box sx={{ flexGrow: 1 }}>
                         <Typography gutterBottom variant='h5' component='div'>

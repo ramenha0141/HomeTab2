@@ -56,7 +56,7 @@ const rss = async (req: VercelRequest, res: VercelResponse) => {
     )
         .map(
             (rss) => (
-                rss.items.map((feed) => (feed.thumbnail ??= feed.enclosure.link ?? rss.feed.image)),
+                rss.items.map((feed) => (feed.thumbnail ||= feed.enclosure.link || rss.feed.image)),
                 rss
             )
         )
