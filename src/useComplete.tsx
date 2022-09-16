@@ -1,15 +1,9 @@
 import { Google as GoogleIcon, Web as WebIcon } from '@mui/icons-material';
-import {
-    createSvgIcon,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemButton,
-    ListItemText
-} from '@mui/material';
+import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import runSearch from './runSearch';
 import useDebounce from './useDebounce';
+import npmIcon from './npm.svg';
 
 interface Candidate {
     type: 'search' | 'url' | 'npm';
@@ -18,11 +12,6 @@ interface Candidate {
 }
 
 const domain_pattern = /^([\w]{3,}\.)+?(com|jp|co\.jp|net|dev|io)$/;
-
-const NpmIcon = createSvgIcon(
-    <path d='M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576zm-416 32H32v128h64v-96h32v96h32V192zm160 0H192v160h64v-32h64V192zm224 0H352v128h64v-96h32v96h32v-96h32v96h32V192z' />,
-    'Npm'
-);
 
 const useComplete = (
     text: string,
@@ -135,7 +124,7 @@ const useComplete = (
                                         ) : candidate.type === 'url' ? (
                                             <WebIcon />
                                         ) : (
-                                            <NpmIcon />
+                                            <img src={npmIcon} style={{ height: 24 }} />
                                         )}
                                     </ListItemAvatar>
                                     <ListItemText
