@@ -28,7 +28,6 @@ import {
 } from '@mui/material';
 import { atom, useAtom } from 'jotai';
 import { MouseEvent, useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import goUrl from './goUrl';
 
 interface Bookmark {
@@ -41,7 +40,7 @@ type DialogType = 'add' | 'edit' | 'delete';
 
 const bookmarkItemsAtomBase = atom<Bookmark[]>(
     (JSON.parse(localStorage.getItem('bookmarkItems') ?? '[]') as Omit<Bookmark, 'id'>[]).map(
-        (item) => ({ ...item, id: uuid() })
+        (item) => ({ ...item, id: crypto.randomUUID() })
     )
 );
 const bookmarkItemsAtom = atom<Bookmark[], Bookmark[]>(
@@ -139,7 +138,7 @@ const BookmarkDialog = ({
         setBookmarkItems([
             ...bookmarkItems,
             {
-                id: uuid(),
+                id: crypto.randomUUID(),
                 title,
                 url
             }
