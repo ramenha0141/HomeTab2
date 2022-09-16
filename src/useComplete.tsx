@@ -1,16 +1,28 @@
 import { Google as GoogleIcon, Web as WebIcon } from '@mui/icons-material';
-import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import {
+    createSvgIcon,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemButton,
+    ListItemText
+} from '@mui/material';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import runSearch from './runSearch';
 import useDebounce from './useDebounce';
 
 interface Candidate {
-    type: 'search' | 'url';
+    type: 'search' | 'url' | 'npm';
     text: string;
     detail?: string;
 }
 
 const domain_pattern = /^([\w]{3,}\.)+?(com|jp|co\.jp|net|dev|io)$/;
+
+const NpmIcon = createSvgIcon(
+    <path d='M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576zm-416 32H32v128h64v-96h32v96h32V192zm160 0H192v160h64v-32h64V192zm224 0H352v128h64v-96h32v96h32v-96h32v96h32V192z' />,
+    'Npm'
+);
 
 const useComplete = (
     text: string,
@@ -31,6 +43,14 @@ const useComplete = (
                     type: 'url',
                     text: debouncedText,
                     detail: 'Open URL'
+                }
+            ]);
+        } else if (debouncedText.startsWith('npm:') && debouncedText.length > 4) {
+            setCandidates([
+                {
+                    type: 'npm',
+                    text: debouncedText,
+                    detail: 'Search NPM Package'
                 }
             ]);
         } else {
@@ -110,7 +130,13 @@ const useComplete = (
                                     onClick={() => runSearch(candidate.text)}
                                 >
                                     <ListItemAvatar>
-                                        {candidate.type === 'search' ? <GoogleIcon /> : <WebIcon />}
+                                        {candidate.type === 'search' ? (
+                                            <GoogleIcon />
+                                        ) : candidate.type === 'url' ? (
+                                            <WebIcon />
+                                        ) : (
+                                            <NpmIcon />
+                                        )}
                                     </ListItemAvatar>
                                     <ListItemText
                                         sx={{ textAlign: 'center' }}
