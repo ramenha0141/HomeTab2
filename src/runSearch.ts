@@ -4,7 +4,7 @@ import { Candidate } from './useComplete';
 const runSearch = (candidate: Candidate) => {
     switch (candidate.type) {
         case 'url': {
-            goUrl(candidate.text.slice(4));
+            goUrl(candidate.text);
             break;
         }
         case 'npm': {
