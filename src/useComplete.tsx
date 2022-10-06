@@ -1,13 +1,20 @@
-import { Google as GoogleIcon, Web as WebIcon } from '@mui/icons-material';
+import {
+    Bookmark as BookmarkIcon,
+    Google as GoogleIcon,
+    Web as WebIcon
+} from '@mui/icons-material';
 import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import runSearch from './runSearch';
 import useDebounce from './useDebounce';
 import npmIcon from './assets/npm.svg';
+import { search } from '@lyrasearch/lyra';
+import { bookmarkDB } from './Bookmark';
 
 export interface Candidate {
-    type: 'search' | 'url' | 'npm';
+    type: 'search' | 'url' | 'npm' | 'bookmark';
     text: string;
+    url: string;
     detail?: string;
 }
 
@@ -31,6 +38,7 @@ const useComplete = (
                 {
                     type: 'url',
                     text: debouncedText,
+                    url: debouncedText,
                     detail: 'Open URL'
                 }
             ]);
@@ -39,35 +47,48 @@ const useComplete = (
                 {
                     type: 'npm',
                     text: debouncedText,
+                    url: `https://www.npmjs.com/search?q=${encodeURIComponent(
+                        debouncedText.slice(4)
+                    )}`,
                     detail: 'Search NPM Package'
                 }
             ]);
         } else {
             const isDomain = domain_pattern.test(debouncedText);
+            const { hits: bookmarks } = search(bookmarkDB, { term: debouncedText });
+            const bookmarkCandidates = bookmarks.map(
+                (bookmark): Candidate => ({
+                    type: 'bookmark',
+                    text: bookmark.title,
+                    detail: `Open ${bookmark.url}`,
+                    url: bookmark.url
+                })
+            );
             fetch(`https://hometab.live/api/complete?q=${debouncedText}`)
                 .then((res) => res.json())
                 .then((candidates: string[]) => {
+                    const searchCandidates = candidates.map(
+                        (candidate): Candidate => ({
+                            type: 'search',
+                            text: candidate,
+                            url: `https://www.google.co.jp/search?q=${encodeURIComponent(
+                                debouncedText
+                            )}`
+                        })
+                    );
                     if (isDomain) {
                         setCandidates([
                             {
                                 type: 'url',
                                 text: debouncedText,
+                                url: debouncedText,
                                 detail: 'Open URL'
                             },
-                            ...candidates.map(
-                                (candidate): Candidate => ({
-                                    type: 'search',
-                                    text: candidate
-                                })
-                            )
+                            ...bookmarkCandidates,
+                            ...searchCandidates
                         ]);
                     } else {
-                        setCandidates(
-                            candidates.map((candidate) => ({
-                                type: 'search',
-                                text: candidate
-                            }))
-                        );
+                        setCandidates([...bookmarkCandidates, ...searchCandidates]);
                     }
                 });
         }
@@ -123,6 +144,8 @@ const useComplete = (
                                             <GoogleIcon />
                                         ) : candidate.type === 'url' ? (
                                             <WebIcon />
+                                        ) : candidate.type === 'bookmark' ? (
+                                            <BookmarkIcon />
                                         ) : (
                                             <img src={npmIcon} style={{ height: 24 }} />
                                         )}

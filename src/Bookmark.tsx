@@ -9,6 +9,7 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { create, insert } from '@lyrasearch/lyra';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import {
     Box,
@@ -53,6 +54,22 @@ const bookmarkItemsAtom = atom<Bookmark[], Bookmark[]>(
         );
     }
 );
+
+export const bookmarkDB = create({
+    schema: {
+        title: 'string',
+        url: 'string'
+    }
+});
+
+console.time('insert');
+for (const bookmark of JSON.parse(localStorage.getItem('bookmarkItems') ?? '[]') as Omit<
+    Bookmark,
+    'id'
+>[]) {
+    insert(bookmarkDB, bookmark);
+}
+console.timeEnd('insert');
 
 const BookmarkItem = ({
     item,
@@ -144,6 +161,7 @@ const BookmarkDialog = ({
             }
         ]);
         onClose();
+        insert(bookmarkDB, { title, url });
     };
     const editBookmark = () => {
         const newBookmarkItems = [...bookmarkItems];
