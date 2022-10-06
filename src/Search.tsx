@@ -1,7 +1,8 @@
 import { Box, styled } from '@mui/material';
 import { useEffect, useState } from 'react';
+import goUrl from './goUrl';
 import runSearch from './runSearch';
-import useComplete from './useComplete';
+import useComplete, { Candidate } from './useComplete';
 
 const SearchContainer = styled('div')({
     position: 'relative',
@@ -36,17 +37,17 @@ let isDuringComposition = false;
 
 const Search = () => {
     const [text, setText] = useState('');
-    const [selectedText, setSelectedText] = useState<string | null>(null);
+    const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
     const [focused, setFocused] = useState(false);
-    const [complete, { selectPrev, selectNext }] = useComplete(text, setSelectedText);
-    useEffect(() => setSelectedText(null), [text]);
+    const [complete, { selectPrev, selectNext }] = useComplete(text, setSelectedCandidate);
+    useEffect(() => setSelectedCandidate(null), [text]);
     return (
         <SearchContainer>
             <SearchBox>
                 <Input
                     placeholder='Search..'
                     autoFocus
-                    value={selectedText ?? text}
+                    value={selectedCandidate?.text ?? text}
                     onChange={(e) => setText(e.target.value)}
                     onFocus={() => setFocused(true)}
                     onCompositionStart={() => (isDuringComposition = true)}
@@ -54,7 +55,25 @@ const Search = () => {
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             if (!isDuringComposition) {
-                                runSearch(selectedText ?? text);
+                                if (selectedCandidate) {
+                                    runSearch(selectedCandidate);
+                                } else {
+                                    if (text.startsWith('url:') && text.length > 4) {
+                                        goUrl(text.slice(4));
+                                    } else if (text.startsWith('npm:') && text.length > 4) {
+                                        goUrl(
+                                            `https://www.npmjs.com/search?q=${encodeURIComponent(
+                                                text.slice(4)
+                                            )}`
+                                        );
+                                    } else {
+                                        goUrl(
+                                            `https://www.google.co.jp/search?q=${encodeURIComponent(
+                                                text
+                                            )}`
+                                        );
+                                    }
+                                }
                             }
                         } else if (e.key === 'Escape') {
                             e.currentTarget.blur();

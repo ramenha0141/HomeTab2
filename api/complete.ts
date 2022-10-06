@@ -3,7 +3,11 @@ import fetch from 'node-fetch';
 
 const complete = async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', 'https://hometab.live');
+    if (req.headers.origin === 'http://localhost:5173/') {
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173/');
+    } else {
+        res.setHeader('Access-Control-Allow-Origin', 'https://hometab.live');
+    }
     const { q } = req.query;
     if (!(q && q.length && typeof q === 'string')) {
         res.status(400).json({

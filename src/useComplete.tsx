@@ -3,9 +3,9 @@ import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@m
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import runSearch from './runSearch';
 import useDebounce from './useDebounce';
-import npmIcon from './npm.svg';
+import npmIcon from './assets/npm.svg';
 
-interface Candidate {
+export interface Candidate {
     type: 'search' | 'url' | 'npm';
     text: string;
     detail?: string;
@@ -15,7 +15,7 @@ const domain_pattern = /^([\w]{3,}\.)+?(com|jp|co\.jp|net|dev|io)$/;
 
 const useComplete = (
     text: string,
-    setText: (text: string) => void
+    setSelectedCandidate: (candidate: Candidate) => void
 ): [ReactNode, { selectPrev: () => void; selectNext: () => void }] => {
     const debouncedText = useDebounce(text, 200);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
@@ -73,7 +73,7 @@ const useComplete = (
         }
     }, [debouncedText]);
     useEffect(() => {
-        if (selectedIndex !== null) setText(candidates[selectedIndex].text);
+        if (selectedIndex !== null) setSelectedCandidate(candidates[selectedIndex]);
     }, [selectedIndex]);
     const selectPrev = () => {
         if (selectedIndex !== null) {
@@ -116,7 +116,7 @@ const useComplete = (
                                                 ? 'rgba(255, 255, 255, 0.12)'
                                                 : undefined
                                     }}
-                                    onClick={() => runSearch(candidate.text)}
+                                    onClick={() => runSearch(candidate)}
                                 >
                                     <ListItemAvatar>
                                         {candidate.type === 'search' ? (

@@ -1,12 +1,19 @@
 import goUrl from './goUrl';
+import { Candidate } from './useComplete';
 
-const runSearch = (text: string) => {
-    if (text.startsWith('url:') && text.length > 4) {
-        goUrl(text.slice(4));
-    } else if (text.startsWith('npm:') && text.length > 4) {
-        goUrl(`https://www.npmjs.com/search?q=${encodeURIComponent(text.slice(4))}`);
-    } else {
-        goUrl(`https://www.google.co.jp/search?q=${encodeURIComponent(text)}`);
+const runSearch = (candidate: Candidate) => {
+    switch (candidate.type) {
+        case 'url': {
+            goUrl(candidate.text.slice(4));
+            break;
+        }
+        case 'npm': {
+            goUrl(`https://www.npmjs.com/search?q=${encodeURIComponent(candidate.text.slice(4))}`);
+            break;
+        }
+        case 'search': {
+            goUrl(`https://www.google.co.jp/search?q=${encodeURIComponent(candidate.text)}`);
+        }
     }
 };
 export default runSearch;
