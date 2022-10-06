@@ -56,7 +56,7 @@ const useComplete = (
         } else {
             const isDomain = domain_pattern.test(debouncedText);
             const { hits: bookmarks } = search(bookmarkDB, { term: debouncedText });
-            const bookmarkCandidates = bookmarks.map(
+            const bookmarkCandidates = bookmarks.slice(0, 3).map(
                 (bookmark): Candidate => ({
                     type: 'bookmark',
                     text: bookmark.title,
