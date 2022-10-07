@@ -106,7 +106,7 @@ const BookmarkItem = ({
             >
                 <img
                     src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${item.url}&sz=64`}
-                    style={{ width: 64, height: 64, borderRadius: 8 }}
+                    style={{ width: 64, height: 64, borderRadius: 12 }}
                 />
                 <Typography
                     component='p'
