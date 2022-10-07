@@ -72,7 +72,7 @@ const useComplete = (
                             type: 'search',
                             text: candidate,
                             url: `https://www.google.co.jp/search?q=${encodeURIComponent(
-                                debouncedText
+                                candidate
                             )}`
                         })
                     );
