@@ -170,7 +170,7 @@ const App = () => {
                         onClick={() => setApp('rss')}
                     />
                 </SpeedDial>
-                <Fab onClick={() => setShowPreferences(true)}>
+                <Fab onClick={() => setShowPreferences(true)} aria-label='Open Preferences'>
                     <TuneIcon />
                 </Fab>
             </Box>

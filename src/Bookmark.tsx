@@ -303,7 +303,11 @@ const Bookmark = () => {
                                 }
                             />
                         ))}
-                        <IconButton size='large' onClick={() => showDialog('add')}>
+                        <IconButton
+                            size='large'
+                            onClick={() => showDialog('add')}
+                            aria-label='Add Bookmark'
+                        >
                             <AddIcon />
                         </IconButton>
                     </Box>
