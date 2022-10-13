@@ -24,7 +24,7 @@ const useComplete = (
     text: string,
     setSelectedCandidate: (candidate: Candidate) => void
 ): [ReactNode, { selectPrev: () => void; selectNext: () => void }] => {
-    const debouncedText = useDebounce(text, 200);
+    const debouncedText = useDebounce(text, 150);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     useEffect(() => {
