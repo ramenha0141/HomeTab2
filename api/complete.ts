@@ -1,19 +1,13 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import fetch from 'node-fetch';
+export const config = {
+    runtime: 'experimental-edge'
+};
 
-const complete = async (req: VercelRequest, res: VercelResponse) => {
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    if (req.headers.origin === 'http://localhost:5173') {
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-    } else {
-        res.setHeader('Access-Control-Allow-Origin', 'https://hometab.live');
-    }
-    const { q } = req.query;
+export default async (req: Request): Promise<Response> => {
+    const q = new URL(req.url).searchParams.get('q');
     if (!(q && q.length && typeof q === 'string')) {
-        res.status(400).json({
-            error: 'invalid "q" parameter'
-        });
-        return;
+        const res = new Response(null, { status: 400, statusText: 'invalid "q" parameter' });
+        cors(req, res);
+        return res;
     }
     const completes = (
         await (
@@ -24,6 +18,16 @@ const complete = async (req: VercelRequest, res: VercelResponse) => {
             )
         ).json()
     )[1];
-    res.status(200).json(completes);
+    const res = new Response(JSON.stringify(completes));
+    cors(req, res);
+    return res;
 };
-export default complete;
+
+const cors = (req: Request, res: Response) => {
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    if (req.headers.get('origin') === 'http://localhost:5173') {
+        res.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173');
+    } else {
+        res.headers.set('Access-Control-Allow-Origin', 'https://hometab.live');
+    }
+};
