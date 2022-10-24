@@ -25,7 +25,6 @@ import {
 } from '@mui/material';
 import { lazy, Suspense, useMemo, useState } from 'react';
 import Bookmark from './Bookmark';
-import Preferences from './Preferences';
 import Search from './Search';
 
 const Tasks = lazy(() => import('./Tasks'));
@@ -44,7 +43,6 @@ const App = () => {
             }),
         [darkMode]
     );
-    const [showPreferences, setShowPreferences] = useState(false);
     const [app, setApp] = useState<'tasks' | 'youtube' | 'calculator' | 'rss' | null>(null);
     return (
         <ThemeProvider theme={theme}>
@@ -170,11 +168,7 @@ const App = () => {
                         onClick={() => setApp('rss')}
                     />
                 </SpeedDial>
-                <Fab onClick={() => setShowPreferences(true)} aria-label='Open Preferences'>
-                    <TuneIcon />
-                </Fab>
             </Box>
-            <Preferences open={showPreferences} onClose={() => setShowPreferences(false)} />
         </ThemeProvider>
     );
 };
