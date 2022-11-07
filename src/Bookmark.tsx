@@ -121,7 +121,8 @@ const BookmarkItem = ({
                         textAlign: 'center',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        textOverflow: 'ellipsis',
+                        color: '#fff'
                     }}
                 >
                     {item.title}
